@@ -171,7 +171,7 @@ class Orm
 	}
 	
 	/* @note Should this be a function? It's only issued one time. */
-	private function _getOptions()
+	protected function _getOptions()
 	{
 		$options = array(
 			'db-type' => 'mysql',
@@ -184,7 +184,7 @@ class Orm
 		return $options;
 	}
 
-	private function _connect()
+	protected function _connect()
 	{
 		if($this->options != null)
 		{
@@ -205,7 +205,7 @@ class Orm
 		}
 	}
 
-	private function _disconnect()
+	protected function _disconnect()
 	{
 		$this->pdo = null;
 	}
@@ -215,7 +215,7 @@ class Orm
 	 *
 	 * @param string $query The database query to be processed
 	 */
-	private function _processQuery($query)
+	protected function _processQuery($query)
 	{
 		if($this->inTransaction)
 		{
