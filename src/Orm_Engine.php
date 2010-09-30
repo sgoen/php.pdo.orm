@@ -5,7 +5,7 @@
  *
  * @author j.smit <j.smit@sgoen.nl>
  */
-class Orm
+class Orm_Engine
 {
 	/**
 	 * @var array() $options Holds options regarding the database connection.
