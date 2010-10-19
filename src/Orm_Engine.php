@@ -1,4 +1,5 @@
 <?php
+require_once("Orm_Config.php");
 /**
  * A basic orm class which uses PDO to provide simple and easy object relation mapping.
  * Note that every used object should have a variable $id and all vars should be public.
@@ -26,7 +27,7 @@ class Orm_Engine
 	
 	public function __construct()
 	{
-		$this->options = $this->_getOptions();
+		$this->options = Orm_Config::getOptions();
 		$this->pdo = null;
 		$this->inTransaction = false;
 		$this->transactionDate = null;
@@ -170,20 +171,6 @@ class Orm_Engine
 		$this->transactionData = null;	
 	}
 	
-	/* @note Should this be a function? It's only issued one time. */
-	protected function _getOptions()
-	{
-		$options = array(
-			'db-type' => 'mysql',
-			'db-host' => 'localhost',
-			'db-name' => 'test_orm',
-			'db-user' => 'root',
-			'db-pass' => 'test',
-		);
-		
-		return $options;
-	}
-
 	protected function _connect()
 	{
 		if($this->options != null)
