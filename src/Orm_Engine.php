@@ -27,7 +27,7 @@ class Orm_Engine
 	
 	public function __construct()
 	{
-		$this->options = Orm_Config::getOptions();
+		$this->options = Orm_Config::$config;
 		$this->pdo = null;
 		$this->inTransaction = false;
 		$this->transactionDate = null;

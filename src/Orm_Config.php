@@ -6,24 +6,13 @@
  */
 class Orm_Config
 {
-	protected static $dbType = 'mysql';
-	protected static $dbHost = 'localhost';
-	protected static $dbName = 'test_orm';
-	protected static $dbUser = 'root';
-	protected static $dbPass = 'test';
-
-	public static function getOptions()
-	{
-		$options = array(
-			'db-type' => self::$dbType,
-			'db-host' => self::$dbHost,
-			'db-name' => self::$dbName,
-			'db-user' => self::$dbUser,
-			'db-pass' => self::$dbPass,
-		);
-
-		return $options;
-	}
-}
-print_r(Orm_Config::getOptions());
+	public static $config = array
+	(
+		'db-type' => 'mysql',
+		'db-host' => 'localhost',
+		'db-name' => 'test_orm',
+		'db-user' => 'roor',
+		'db-pass' => 'test',
+	);
+}	
 ?>
