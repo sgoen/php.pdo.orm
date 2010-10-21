@@ -81,11 +81,11 @@ class Orm_Engine
 			{
 				if($key != 'id' && $iterator < sizeof($vars) - 1)
 				{
-					$changes = $changes.$key.'="'.$object->$key.'", ';
+					$changes = "$changes$key=\"{$object->$key}\", ";
 				}
 				elseif($iterator == sizeof($vars) - 1)
 				{					
-					$changes = $changes.$key.'="'.$object->$key.'"';
+					$changes = "$changes$key=\"{$object->$key}\"";
 				}
 				$iterator++;
 			}

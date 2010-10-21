@@ -11,7 +11,7 @@ class Orm_Settings
 		'db-type' => 'mysql',
 		'db-host' => 'localhost',
 		'db-name' => 'test_orm',
-		'db-user' => 'roor',
+		'db-user' => 'root',
 		'db-pass' => 'test',
 	);
 }	
