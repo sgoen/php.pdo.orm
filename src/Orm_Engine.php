@@ -1,5 +1,5 @@
 <?php
-require_once("Orm_Config.php");
+require_once("Orm_Settings.php");
 /**
  * A basic orm class which uses PDO to provide simple and easy object relation mapping.
  * Note that every used object should have a variable $id and all vars should be public.
@@ -9,9 +9,9 @@ require_once("Orm_Config.php");
 class Orm_Engine
 {
 	/**
-	 * @var array() $options Holds options regarding the database connection.
+	 * @var array() $settings Holds options regarding the database connection.
 	 */
-	protected $options;
+	protected $settings;
 	/**
 	 * @var PDO $pdo Holds the PDO object used for database interaction.
 	 */
@@ -27,7 +27,7 @@ class Orm_Engine
 	
 	public function __construct()
 	{
-		$this->options = Orm_Config::$config;
+		$this->settings = Orm_Settings::$settings;
 		$this->pdo = null;
 		$this->inTransaction = false;
 		$this->transactionDate = null;
@@ -173,13 +173,13 @@ class Orm_Engine
 	
 	protected function _connect()
 	{
-		if($this->options != null)
+		if($this->settings != null)
 		{
-			$dbType = $this->options['db-type'];
-			$dbHost = $this->options['db-host'];
-			$dbName = $this->options['db-name'];
-			$dbUser = $this->options['db-user'];
-			$dbPass = $this->options['db-pass'];
+			$dbType = $this->settings['db-type'];
+			$dbHost = $this->settings['db-host'];
+			$dbName = $this->settings['db-name'];
+			$dbUser = $this->settings['db-user'];
+			$dbPass = $this->settings['db-pass'];
 
 			try
 			{

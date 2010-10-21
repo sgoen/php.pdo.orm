@@ -1,12 +1,12 @@
 <?php
 /**
- * This file holds all the configurable variables for the orm.
+ * This file holds all the settings for the orm.
  *
  * @author J.Smit <j.smit@sgoen.nl>
  */
-class Orm_Config
+class Orm_Settings
 {
-	public static $config = array
+	public static $setings = array
 	(
 		'db-type' => 'mysql',
 		'db-host' => 'localhost',
