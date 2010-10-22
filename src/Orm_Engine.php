@@ -183,7 +183,7 @@ class Orm_Engine
 
 			try
 			{
-				$this->databaseHandler = new PDO("$dbType:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
+				$this->pdo = new PDO("$dbType:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
 			}
 			catch(PDOException $e)
 			{
