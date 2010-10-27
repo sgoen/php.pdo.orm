@@ -12,14 +12,17 @@ class Orm_Engine
 	 * @var array() $settings Holds options regarding the database connection.
 	 */
 	protected $settings;
+	
 	/**
 	 * @var PDO $pdo Holds the PDO object used for database interaction.
 	 */
 	protected $pdo;
+	
 	/**
 	 * @var boolean $inTransaction Holds the current transaction state.
 	 */
 	protected $inTransaction;
+	
 	/**
 	 * @var array() $transactionData Temporary holds all queries stored for a transaction.
 	 */
@@ -32,15 +35,15 @@ class Orm_Engine
 		$this->inTransaction = false;
 		$this->transactionDate = null;
 	}
-		
+	
 	/**
-     * Gets the data from the given table.
-     *
-     * @param string $table The table from which data should be given
-     * @param string $where Customize output by entering extra serialized SQL statements
+	 * Gets the data from the given table.
+	 *
+	 * @param string $table The table from which data should be given
+	 * @param string $where Customize output by entering extra serialized SQL statements
 	 * @param array() $vars Contains the vars that should be replaced with the placeholders in the $where query
-     * @return array() $result
-     */
+	 * @return array() $result
+	 */
 	public function get($table, $where = null, $vars = array())
 	{
 		if(!class_exists($table))
@@ -69,55 +72,49 @@ class Orm_Engine
      */
 	public function save($object)
 	{
-		$className = get_class($object);
-		$vars = get_class_vars($className);
-		$query = "";
+		$tableName = get_class($object);
+		$vars      = $this->_getVariables($object);
+		$query     = "";
 		
-		if(isset($object->id) && $object->id > 0)
+		if(key_exists('id', $vars) && is_numeric($vars['id']))
 		{
-			$changes = "";
-			$iterator = 0;
+			$query = "UPDATE $tableName SET "; 
+			
 			foreach($vars as $key => $value)
 			{
-				if($key != 'id' && $iterator < sizeof($vars) - 1)
+				if($key != 'id')
 				{
-					$changes = "$changes$key=\"{$object->$key}\", ";
+					$query = "$query $key=:$key, ";
 				}
-				elseif($iterator == sizeof($vars) - 1)
-				{					
-					$changes = "$changes$key=\"{$object->$key}\"";
-				}
-				$iterator++;
 			}
-			$query = "UPDATE $className SET $changes WHERE id = $object->id";
+
+			// remove the last comma and space.
+			$query = substr($query, 0, -2);
+			$query = "$query WHERE id = :id";
 		}
 		else
 		{
-			$queryFields = "";
-			$queryValues = "";
+			$query       = "INSERT INTO $tableName (";
+			$queryValues = ") VALUES (";
 
-			$iterator = 0;
-			foreach($vars as $key=>$value)
+			foreach($vars as $key => $value)
 			{
-				if($key != 'id' && $iterator < sizeof($vars) - 1)
+				if($key != 'id')
 				{
-					$queryFields = "$queryFields$key, ";
-					$objectValue = $object->$key;
-					$queryValues = "$queryValues'$objectValue', ";
+					$query       = "$query $key,";
+					$queryValues = "$queryValues :$key,";
 				}
-				elseif($iterator == sizeof($vars) - 1)
-				{
-					$queryFields = "$queryFields$key";
-					$objectValue = $object->$key;
-					$queryValues = "$queryValues'$objectValue'";
-				}
-				$iterator++;
-			}
 
-			$query = "INSERT INTO $className($queryFields) VALUES ($queryValues)";
+			}
+			
+			// remove the last comma and space.
+			$query       = substr($query, 0, -1);
+			$queryValues = substr($queryValues, 0, -1);
+
+			$query = "$query $queryValues)";
 		}
 		
-		$this->_processQuery($query);
+		$this->_processStatement($query, $vars);
 	}
 
 	/**
@@ -127,10 +124,11 @@ class Orm_Engine
 	 */
 	public function remove($object)
 	{
-		$className = get_class($object);
-		$query = "DELETE FROM $className WHERE id = $object->id";
+		$tableName = get_class($object);
+		$vars      = $this->_getVariables($object);
+		$query     = "DELETE FROM $className WHERE id = :id";
 
-		$this->_processQuery($query);
+		$this->_processStatement($query, $vars);
 	}
 
 
@@ -152,7 +150,12 @@ class Orm_Engine
 
 		foreach($this->transactionData as $data)
 		{
-			$this->databaseHandler->exec($data);
+			// quickfix
+			foreach($data as $key => $value)
+			{
+				$statement = $this->pdo->prepare($key);
+				$statement->execute($value);
+			}
 		}
 
 		$this->pdo->commit();
@@ -202,16 +205,19 @@ class Orm_Engine
 	 *
 	 * @param string $query The database query to be processed
 	 */
-	protected function _processQuery($query)
+	protected function _processQuery($query, $vars)
 	{
 		if($this->inTransaction)
 		{
-			$this->transactionData[] = $query;
+			$this->transactionData[] = array($query => $vars);
 		}
 		else
 		{
 			$this->_connect();
-			$this->pdo->exec($query);
+
+			$statement = $this->pdo->prepare($query);
+			$statement->execute($vars);
+			
 			$this->_disconnect();
 		}
 	}
