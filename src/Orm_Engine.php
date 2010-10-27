@@ -111,6 +111,9 @@ class Orm_Engine
 			$queryValues = substr($queryValues, 0, -1);
 
 			$query = "$query $queryValues)";
+
+			// unset id
+			unset($vars['id']);
 		}
 		
 		$this->_processStatement($query, $vars);
@@ -204,7 +207,7 @@ class Orm_Engine
 	 *
 	 * @param string $query The database query to be processed
 	 */
-	protected function _processQuery($query, $vars)
+	protected function _processStatement($query, $vars)
 	{
 		if($this->inTransaction)
 		{
