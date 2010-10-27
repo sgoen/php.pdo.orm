@@ -6,7 +6,7 @@
  */
 class Orm_Settings
 {
-	public static $setings = array
+	public static $settings = array
 	(
 		'db-type' => 'mysql',
 		'db-host' => 'localhost',
