@@ -104,7 +104,6 @@ class Orm_Engine
 					$query       = "$query $key,";
 					$queryValues = "$queryValues :$key,";
 				}
-
 			}
 			
 			// remove the last comma and space.
