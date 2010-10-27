@@ -72,7 +72,7 @@ class Orm_Engine
 		$className = get_class($object);
 		$vars = get_class_vars($className);
 		$query = "";
-	
+		
 		if(isset($object->id) && $object->id > 0)
 		{
 			$changes = "";
@@ -214,7 +214,28 @@ class Orm_Engine
 			$this->pdo->exec($query);
 			$this->_disconnect();
 		}
-	}	
+	}
+
+	/**
+	 * Returns all the objects variables as an assosiative array.
+	 *
+	 * @param $object
+	 * @return $result[] Array containing the variables and their values as key-value pairs.
+	 */
+	protected function _getVariables($class)
+	{
+		$reflect    = new ReflectionClass($class);
+		$properties = $reflect->getProperties();
+		$result     = array();
+
+		foreach($properties as $property)
+		{
+			$property->setAccessible(true);
+			$result[$property->getName()] = $property->getValue($class);
+		}
+
+		return $result;
+	}
 }
 ?>
 
