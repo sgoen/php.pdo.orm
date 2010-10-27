@@ -130,7 +130,7 @@ class Orm_Engine
 		$vars      = $this->_getVariables($object);
 		$query     = "DELETE FROM $className WHERE id = :id";
 
-		$this->_processStatement($query, $vars);
+		$this->_processStatement($query, array('id' => $vars['id']));
 	}
 
 
