@@ -45,18 +45,15 @@ class Orm_Engine
 	{
 		if(!class_exists($table))
 		{
-			throw new Exception();
+			throw new Exception("Class doesn't exist.");
 		}
 
 		$this->_connect();		
 
 		$query     = ($where != null) ? "SELECT * FROM $table $where" : "SELECT * FROM $table";
 		$statement = $this->pdo->prepare($query);
-
-		foreach($vars as $key => $value)
-		{	
-			$statement->bindParam(":$key", $value);
-		}
+		
+		$statement->execute($vars);
 		
 		$result = $statement->fetchAll(PDO::FETCH_CLASS, $table);
 
