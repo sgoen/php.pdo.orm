@@ -37,29 +37,32 @@ class Orm_Engine
      * Gets the data from the given table.
      *
      * @param string $table The table from which data should be given
-     * @param string $custom Customize output by entering extra SQL statements
+     * @param string $where Customize output by entering extra serialized SQL statements
+	 * @param array() $vars Contains the vars that should be replaced with the placeholders in the $where query
      * @return array() $result
      */
-	public function get($table, $custom = null)
+	public function get($table, $where = null, $vars = array())
 	{
-		if(class_exists($table))
+		if(!class_exists($table))
 		{
-			$this->_connect();
-			
-			$query = "SELECT * FROM $table";
-
-			if($custom != null)
-			{
-				$query = "$query $custom";
-			}
-
-			$pdoStatement = $this->pdo->query($query);
-			$result = $pdoStatement->fetchAll(PDO::FETCH_CLASS, $table);
-
-			$this->_disconnect();
-
-			return $result;
+			throw new Exception();
 		}
+
+		$this->_connect();		
+
+		$query     = ($where != null) ? "SELECT * FROM $table $where" : "SELECT * FROM $table";
+		$statement = $this->pdo->prepare($query);
+
+		foreach($vars as $key => $value)
+		{	
+			$statement->bindParam(":$key", $value);
+		}
+		
+		$result = $statement->fetchAll(PDO::FETCH_CLASS, $table);
+
+		$this->_disconnect();
+
+		return $result;
 	}
 
 	/**
