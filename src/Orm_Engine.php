@@ -64,12 +64,12 @@ class Orm_Engine
 
 		return $result;
 	}
-
+	
 	/**
 	 * Saves or updates a given object based on it's id.
 	 *
-     * @note Needs rewriting!
-     */
+	 * @note Needs rewriting!
+	 */
 	public function save($object)
 	{
 		$tableName = get_class($object);
@@ -116,9 +116,9 @@ class Orm_Engine
 		
 		$this->_processStatement($query, $vars);
 	}
-
+	
 	/**
-     * Removes the given object
+	 * Removes the given object
 	 *
 	 * @param Object $object The object to remove from the database
 	 */
@@ -134,7 +134,7 @@ class Orm_Engine
 
 	/**
 	 * Start a transaction in which multiple queries can be executed.
-     */
+	 */
 	public function startTransaction()
 	{
 		$this->inTransaction = true;
