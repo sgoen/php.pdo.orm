@@ -48,7 +48,7 @@ class Orm_Engine
 	{
 		if(!class_exists($table))
 		{
-			throw new Exception("Class doesn't exist.");
+			throw new Exception("Orm_Engine: Class doesn't exist.");
 		}
 
 		$this->_connect();		
@@ -192,7 +192,7 @@ class Orm_Engine
 			}
 			catch(PDOException $e)
 			{
-				print_r($e);
+				throw new Exception("Orm_Engine: Unable to connect to database.");
 			}
 		}
 	}
