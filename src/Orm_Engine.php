@@ -49,7 +49,9 @@ class Orm_Engine
 
 		$this->_connect();		
 
-		$query     = ($where != null) ? "SELECT * FROM $table $where" : "SELECT * FROM $table";
+		$query     = Orm_Settings::$settings['query-select'];
+		$query     = preg_replace("/%TABLE%/", $table, $query);
+		$query     = ($where != null) ? preg_replace("/%WHERE%/", $where, $query) : preg_replace("/%WHERE%/", "", $query);
 		$statement = $this->pdo->prepare($query);
 		
 		$statement->execute($vars);
@@ -105,8 +107,7 @@ class Orm_Engine
 			// remove the last comma and space.
 			$query       = substr($query, 0, -1);
 			$queryValues = substr($queryValues, 0, -1);
-
-			$query = "$query $queryValues)";
+			$query       = "$query $queryValues)";
 
 			// unset id
 			unset($vars['id']);
@@ -124,7 +125,9 @@ class Orm_Engine
 	{
 		$tableName = get_class($object);
 		$vars      = $this->_getVariables($object);
-		$query     = "DELETE FROM $className WHERE id = :id";
+		$query     = Orm_Settings::$settings['query-delete'];
+		$query     = preg_replace("/%TABLE%/", $classname, $query);
+		$query     = preg_replace("/%WHERE%/", "id = :id", $query);
 
 		$this->_processStatement($query, array('id' => $vars['id']));
 	}
