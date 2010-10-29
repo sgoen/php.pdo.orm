@@ -1,4 +1,5 @@
 <?php
+require_once("Orm_iSingletonDbDriver.php");
 class Orm_DbDriverMysql implements Orm_iSingletonDbDriver
 {
 	protected static $instance = null;

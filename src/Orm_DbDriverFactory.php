@@ -1,4 +1,5 @@
 <?php
+require_once("Orm_DbDriverMysql.php");
 /**
  * Returns a DbDriver Object based on the 'db-type' in Settings.
  * 
