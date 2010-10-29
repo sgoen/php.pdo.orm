@@ -9,11 +9,6 @@ require_once("Orm_Settings.php");
 class Orm_Engine
 {
 	/**
-	 * @var array() $settings Holds options regarding the database connection.
-	 */
-	protected $settings;
-	
-	/**
 	 * @var PDO $pdo Holds the PDO object used for database interaction.
 	 */
 	protected $pdo;
@@ -178,23 +173,7 @@ class Orm_Engine
 	
 	protected function _connect()
 	{
-		if($this->settings != null)
-		{
-			$dbType = $this->settings['db-type'];
-			$dbHost = $this->settings['db-host'];
-			$dbName = $this->settings['db-name'];
-			$dbUser = $this->settings['db-user'];
-			$dbPass = $this->settings['db-pass'];
-
-			try
-			{
-				$this->pdo = new PDO("$dbType:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
-			}
-			catch(PDOException $e)
-			{
-				throw new Exception("Orm_Engine: Unable to connect to database.");
-			}
-		}
+		$this->pdo = Orm_DbDriverFactory::getDriver(Orm_Settings::$settings['db-type'])->getPDO();
 	}
 
 	protected function _disconnect()

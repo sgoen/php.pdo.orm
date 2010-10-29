@@ -1,15 +1,7 @@
 <?php
-class Orm_DbDriverMysql implements Orm_iSingleton
+class Orm_DbDriverMysql implements Orm_iSingletonDbDriver
 {
-	protected $dsn;
-	protected $userName;
-	protected $password;
-	protected $driverOptions;	
-	
 	protected static $instance = null;
-
-	// We could place all these functions in a parent when late-static binding is available.
-	// now make it not static :P
 
 	public static function getInstance()
 	{
@@ -22,28 +14,18 @@ class Orm_DbDriverMysql implements Orm_iSingleton
 		return self::$instance;
 	}
 
-	public function __construct()
+	public function getPDO()
 	{
-	}
+		$settings = Orm_Settings::$settings;
 
-	public function getDsn()
-	{
-		return $this->dsn;
-	}
-
-	public function getUsername()
-	{
-		return $this->Username;
-	}
-	
-	public function getPassword()
-	{
-		return $this->Password;
-	}
-
-	public function getDriverOptions()
-	{
-		return $this->driverOptions;
+		try
+		{
+			return new PDO("{$settings['db-type']}:host={$settings['db-host']};dbname={$settings['db-name']}", $settings['db-user'], $settings['db-pass']);
+		}
+		catch(PDOException $e)
+		{
+			throw new Exception("Orm_Engine: Unable to connect to database.");
+		}
 	}
 }
 ?>
