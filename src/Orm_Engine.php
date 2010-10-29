@@ -76,38 +76,45 @@ class Orm_Engine
 		
 		if(key_exists('id', $vars) && is_numeric($vars['id']))
 		{
-			$query = "UPDATE $tableName SET "; 
-			
+			$updates = ""; 
 			foreach($vars as $key => $value)
 			{
 				if($key != 'id')
 				{
-					$query = "$query $key=:$key, ";
+					$updates = "$updates $key=:$key,";
 				}
 			}
 
-			// remove the last comma and space.
-			$query = substr($query, 0, -2);
-			$query = "$query WHERE id = :id";
+			// remove the last comma
+			$updates = substr($updates, 0, -1);
+			
+			$query = Orm_Settings::$settings['query-update'];
+			$query = preg_replace("/%TABLE%/", $tableName, $query);
+			$query = preg_replace("/%UPDATES%/", $updates, $query);
+			$query = preg_replace("/%WHERE%/", "id = :id", $query);
 		}
 		else
 		{
-			$query       = "INSERT INTO $tableName (";
-			$queryValues = ") VALUES (";
+			$fields = "";
+			$values = "";
 
 			foreach($vars as $key => $value)
 			{
 				if($key != 'id')
 				{
-					$query       = "$query $key,";
-					$queryValues = "$queryValues :$key,";
+					$fields = "$fields $key,";
+					$values = "$values :$key,";
 				}
 			}
 			
-			// remove the last comma and space.
-			$query       = substr($query, 0, -1);
-			$queryValues = substr($queryValues, 0, -1);
-			$query       = "$query $queryValues)";
+			// remove the last comma
+			$fields = substr($fields, 0, -1);
+			$values = substr($values, 0, -1);
+			
+			$query = Orm_Settings::$settings['query-insert'];
+			$query = preg_replace("/%TABLE%/", $tableName, $query);
+			$query = preg_replace("/%FIELDS%/", $fields, $query);
+			$query = preg_replace("/%VALUE%/", $values, $query);
 
 			// unset id
 			unset($vars['id']);

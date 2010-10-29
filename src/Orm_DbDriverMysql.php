@@ -25,7 +25,7 @@ class Orm_DbDriverMysql implements Orm_iSingletonDbDriver
 		}
 		catch(PDOException $e)
 		{
-			throw new Exception("Orm_Engine: Unable to connect to database.");
+			throw new Exception("Orm_DbDriverMysql: Unable to connect to database.");
 		}
 	}
 }

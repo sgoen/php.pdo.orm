@@ -15,7 +15,7 @@ class Orm_Settings
 		'db-user' => 'root',
 		'db-pass' => 'test',
 	
-		// Basic predefined queries
+		// Query formats
 		'query-select' => 'SELECT * FROM %TABLE% %WHERE%',
 		'query-insert' => 'INSERT INTO %TABLE% (%FIELDS%) VALUES (%VALUES%)',
 		'query-update' => 'UPDATE %TABLE% SET %UPDATES% WHERE %WHERE%',
