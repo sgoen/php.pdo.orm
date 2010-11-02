@@ -76,6 +76,11 @@ class Orm_Engine
 		
 		if(key_exists('id', $vars) && is_numeric($vars['id']))
 		{
+			if(count($this->get($tableName, "WHERE id = :id", array("id" => $vars['id']))) == 0)
+			{
+				throw new Exception("Orm_Engine: Object can't be updated."); 	
+			}
+			
 			$updates = ""; 
 			foreach($vars as $key => $value)
 			{
