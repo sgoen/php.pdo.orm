@@ -7,7 +7,7 @@ require_once("Orm_DbDriverFactory.php");
  *
  * @author j.smit <j.smit@sgoen.nl>
  */
-class Orm_Engine
+class Orm_Core
 {
 	/**
 	 * @var PDO $pdo Holds the PDO object used for database interaction.
