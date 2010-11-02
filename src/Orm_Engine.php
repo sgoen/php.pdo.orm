@@ -114,7 +114,7 @@ class Orm_Engine
 			$query = Orm_Settings::$settings['query-insert'];
 			$query = preg_replace("/%TABLE%/", $tableName, $query);
 			$query = preg_replace("/%FIELDS%/", $fields, $query);
-			$query = preg_replace("/%VALUE%/", $values, $query);
+			$query = preg_replace("/%VALUES%/", $values, $query);
 
 			// unset id
 			unset($vars['id']);
