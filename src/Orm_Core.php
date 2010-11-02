@@ -1,6 +1,6 @@
 <?php
 require_once("Orm_Settings.php");
-require_once("Orm_DbDriverFactory.php");
+require_once("drivers/Orm_DbDriverFactory.php");
 /**
  * A basic orm class which uses PDO to provide simple and easy object relation mapping.
  * Note that every used object should have a variable $id and all vars should be public.
