@@ -133,7 +133,7 @@ class Orm_Engine
 		$tableName = get_class($object);
 		$vars      = $this->_getVariables($object);
 		$query     = Orm_Settings::$settings['query-delete'];
-		$query     = preg_replace("/%TABLE%/", $classname, $query);
+		$query     = preg_replace("/%TABLE%/", $tableName, $query);
 		$query     = preg_replace("/%WHERE%/", "id = :id", $query);
 
 		$this->_processStatement($query, array('id' => $vars['id']));
