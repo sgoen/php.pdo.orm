@@ -29,7 +29,7 @@ class Orm_Engine
 		$this->settings = Orm_Settings::$settings;
 		$this->pdo = null;
 		$this->inTransaction = false;
-		$this->transactionDate = null;
+		$this->transactionData = null;
 	}
 	
 	/**
