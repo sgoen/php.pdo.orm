@@ -35,10 +35,11 @@ class Orm_Core
 	/**
 	 * Gets the data from the given table.
 	 *
-	 * @param string $table The table from which data should be given
-	 * @param string $where Customize output by entering extra serialized SQL statements
-	 * @param array() $vars Contains the vars that should be replaced with the placeholders in the $where query
-	 * @return array() $result
+	 * @throws Exception
+	 * @param  string    $table The table from which data should be given
+	 * @param  string    $where Customize output by entering extra serialized SQL statements
+	 * @param  array()   $vars  Contains the vars that should be replaced with the placeholders in the $where query
+	 * @return array()   $result
 	 */
 	public function get($table, $where = null, $vars = array())
 	{
@@ -67,10 +68,10 @@ class Orm_Core
 	 * Returns a single object
 	 * 
 	 * @throws Exception
-	 * @param  string  $table The table from which data should be given
-	 * @param  string  $where Customize output by entering extra serialized SQL statements
-	 * @param  array() $vars  Contains the vars that should be replaced with the placeholders in the $where query
-	 * @return         $item  The retrieved item
+	 * @param  string    $table The table from which data should be given
+	 * @param  string    $where Customize output by entering extra serialized SQL statements
+	 * @param  array()   $vars  Contains the vars that should be replaced with the placeholders in the $where query
+	 * @return           $item  The retrieved item
 	 */
 	public function getUnique($table, $where, $vars)
 	{
@@ -87,7 +88,8 @@ class Orm_Core
 	/**
 	 * Saves or updates a given object based on it's id.
 	 *
-	 * @param $object The object to be saved.
+	 * @throws Exception
+	 * @param  $object   The object to be saved.
 	 */
 	public function save($object)
 	{
@@ -211,7 +213,7 @@ class Orm_Core
 	/**
 	 * Gets the right PDO object through the driverFactory.
 	 * 
-	 * @see Orm_DbDriverFactory
+	 * @see    Orm_DbDriverFactory
 	 * @return PDO
 	 */
 	protected function _connect()
@@ -249,8 +251,8 @@ class Orm_Core
 	/**
 	 * Returns all the objects variables as an assosiative array.
 	 *
-	 * @param $object
-	 * @return $result[] Array containing the variables and their values as key-value pairs.
+	 * @param  $object
+	 * @return array() $result Array containing the variables and their values as key-value pairs.
 	 */
 	protected function _getVariables($class)
 	{
