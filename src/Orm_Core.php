@@ -69,7 +69,7 @@ class Orm_Core
 		
 		if(count($items) != 1)
 		{
-			throw new Exception("Orm_Core: Object is not unique.");
+			throw new Exception("Orm_Core: Unable to get unique object.");
 		}
 		
 		return $items[0];
