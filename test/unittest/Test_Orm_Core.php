@@ -111,5 +111,19 @@ class Test_Orm_Core extends PHPUnit_Framework_TestCase
         	
 		$this->assertEquals(4, count($this->orm->get('Item')));
 	}
+	
+	public function testGetUnique()
+	{
+		$item = $this->orm->getUnique('Item', "WHERE id = :id", array("id" => 1));
+		$this->assertEquals(1, $item->id);	
+	}
+	
+	/**
+	 * @expectedException Exception
+	 */
+	public function testGetUniqueException()
+	{
+		$item = $this->orm->getUnique('Item', "WHERE id = :id", array("id" => "*"));	
+	}
 }
 ?>

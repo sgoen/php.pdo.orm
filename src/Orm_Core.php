@@ -63,6 +63,18 @@ class Orm_Core
 		return $result;
 	}
 	
+	public function getUnique($table, $where, $vars)
+	{
+		$items = $this->get($table, $where, $vars);
+		
+		if(count($items) != 1)
+		{
+			throw new Exception("Orm_Core: Object is not unique.");
+		}
+		
+		return $items[0];
+	}
+	
 	/**
 	 * Saves or updates a given object based on it's id.
 	 *
