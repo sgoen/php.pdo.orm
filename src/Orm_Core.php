@@ -66,7 +66,7 @@ class Orm_Core
 	/**
 	 * Saves or updates a given object based on it's id.
 	 *
-	 * @note Needs rewriting!
+	 * @param $object The object to be saved.
 	 */
 	public function save($object)
 	{
@@ -187,6 +187,12 @@ class Orm_Core
 		$this->transactionData = null;	
 	}
 	
+	/**
+	 * Gets the right PDO object through the driverFactory.
+	 * 
+	 * @see Orm_DbDriverFactory
+	 * @return PDO
+	 */
 	protected function _connect()
 	{
 		$this->pdo = Orm_DbDriverFactory::getDriver(Orm_Settings::$settings['db-type'])->getPDO();
