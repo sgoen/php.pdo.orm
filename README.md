@@ -42,3 +42,21 @@ An object obtained from the orm can simply be removed by using the remove() func
 	$orm->remove($item);
 
 ### Using transactions
+
+Transactions can be used to group database interaction and execute it at once. Transactions can be used with save() and remove().
+
+	$orm  = new Orm_Core();
+	$item = new Item();
+	
+	$item->foo = "bar";
+	
+	$orm->startTransaction();
+	
+	$orm->save($item);
+	$orm->remove($earlierObtainedItem);
+	
+	$orm->commitTransaction();
+	
+In addition a transaction can be cancelled before committing.
+
+	$orm->cancelTransaction();
