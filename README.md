@@ -1,9 +1,7 @@
-pdp.pdo.orm
+php.pdo.orm
 ===========
 
 ## How to use
-
-### Settings
 
 ### Get all objects
 
