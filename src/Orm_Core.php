@@ -63,6 +63,15 @@ class Orm_Core
 		return $result;
 	}
 	
+	/**
+	 * Returns a single object
+	 * 
+	 * @throws Exception
+	 * @param  string  $table The table from which data should be given
+	 * @param  string  $where Customize output by entering extra serialized SQL statements
+	 * @param  array() $vars  Contains the vars that should be replaced with the placeholders in the $where query
+	 * @return         $item  The retrieved item
+	 */
 	public function getUnique($table, $where, $vars)
 	{
 		$items = $this->get($table, $where, $vars);
