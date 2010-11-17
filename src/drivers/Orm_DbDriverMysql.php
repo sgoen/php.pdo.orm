@@ -1,33 +1,12 @@
 <?php
-require_once("Orm_iSingletonDbDriver.php");
+require_once("Orm_AbstractSingletonDbDriver.php");
 /**
  * Driver for a Mysql PDO object.
  * 
  * @author J.Smit <j.smit@sgoen.nl>
  */
-class Orm_DbDriverMysql implements Orm_iSingletonDbDriver
+class Orm_DbDriverMysql extends Orm_AbstractSingletonDbDriver
 {
-	/**
-	 * @var Orm_DbDriverMysql Singleton instance
-	 */
-	protected static $instance = null;
-
-	/**
-	 * Creates and returns an instance of the Orm_DbDriverMysql
-	 *
-	 * @return Orm_DbDriverMysql
-	 */
-	public static function getInstance()
-	{
-		if(self::$instance == null)
-		{
-			$className      = __CLASS__;			
-			self::$instance = new $className();
-		}
-
-		return self::$instance;
-	}
-
 	/**
 	 * Returns a Mysql PDO object.
 	 * 
