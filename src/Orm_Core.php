@@ -1,5 +1,6 @@
 <?php
 require_once("Orm_Settings.php");
+require_once("Orm_Class.php");
 require_once("drivers/Orm_DbDriverFactory.php");
 /**
  * A basic orm class which uses PDO to provide simple and easy object relation mapping.
@@ -43,12 +44,12 @@ class Orm_Core
 	 */
 	public function get($table, $where = null, $vars = array())
 	{
+		$this->_connect();		
+		
 		if(!class_exists($table))
 		{
-			throw new Exception("Orm_Engine: Class doesn't exist.");
+			Orm_Class::loadClassForTable($table, $this->pdo);
 		}
-
-		$this->_connect();		
 
 		$query     = Orm_Settings::$settings['query-select'];
 		$query     = preg_replace("/%TABLE%/", $table, $query);
