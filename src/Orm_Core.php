@@ -168,7 +168,18 @@ class Orm_Core
 	 */
 	public function loadTableClasses()
 	{
-		// TODO
+		$this->_connect();
+		
+		$query = $this->pdo->prepare("show tables");
+		$query->execute(array());
+		$fields = $query->fetchAll();
+		
+		foreach($fields as $field)
+		{
+			Orm_Class::loadClassForTable($field[0], $this->pdo);
+		}
+		
+		$this->_disconnect();
 	}
 	
 	/**
