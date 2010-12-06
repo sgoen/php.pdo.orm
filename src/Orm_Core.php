@@ -175,22 +175,6 @@ class Orm_Core
 	}
 	
 	/**
-	 * Gets the right PDO object through the driverFactory.
-	 * 
-	 * @see    Orm_DbDriverFactory
-	 * @return PDO
-	 */
-	protected function _connect()
-	{
-		$this->pdo = Orm_DbDriverFactory::getDriver(Orm_Settings::$settings['db-type'])->getPDO();
-	}
-
-	protected function _disconnect()
-	{
-		$this->pdo = null;
-	}
-	
-	/**
 	 * Processes a query wether it should be executed immediately or stored in a transaction.
 	 *
 	 * @param string $query The database query to be processed
