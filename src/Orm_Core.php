@@ -23,7 +23,7 @@ class Orm_Core
 	public function __construct()
 	{
 		$this->settings = Orm_Settings::$settings;
-		$this->pdo = null;
+		$this->pdo = Orm_DbDriverFactory::getDriver(Orm_Settings::$settings['db-type'])->getPDO();
 		$this->inTransaction = false;
 		$this->transactionData = null;
 	}
@@ -39,8 +39,6 @@ class Orm_Core
 	 */
 	public function get($table, $where = null, $vars = array())
 	{
-		$this->_connect();		
-		
 		if(!class_exists($table))
 		{
 			Orm_Class::loadClassForTable($table, $this->pdo);
@@ -54,8 +52,6 @@ class Orm_Core
 		$statement->execute($vars);
 		
 		$result = $statement->fetchAll(PDO::FETCH_CLASS, $table);
-
-		$this->_disconnect();
 
 		return $result;
 	}
@@ -168,8 +164,6 @@ class Orm_Core
 	 */
 	public function loadTableClasses()
 	{
-		$this->_connect();
-		
 		$query = $this->pdo->prepare("show tables");
 		$query->execute(array());
 		$fields = $query->fetchAll();
@@ -178,8 +172,6 @@ class Orm_Core
 		{
 			Orm_Class::loadClassForTable($field[0], $this->pdo);
 		}
-		
-		$this->_disconnect();
 	}
 	
 	/**
@@ -205,12 +197,8 @@ class Orm_Core
 	 */
 	protected function _processStatement($query, $vars)
 	{
-		$this->_connect();
-
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($vars);
-		
-		$this->_disconnect();
 	}
 
 	/**

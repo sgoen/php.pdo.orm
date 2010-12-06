@@ -11,9 +11,7 @@ class Orm_Core_T extends Orm_Core
 {
         public function query($sql)
         {
-                $this->_connect();
                 $this->pdo->query($sql);
-                $this->_disconnect();
         }
 }
 
