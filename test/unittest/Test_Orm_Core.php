@@ -91,26 +91,6 @@ class Test_Orm_Core extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals(0, count($result));
 	}
-        
-	public function testTransaction()
-	{
-		$itemOne = new Item();
-		$itemTwo = new Item();
-        	
-		$itemOne->name = "one";
-		$itemTwo->name = "two";
-        	
-		$this->orm->startTransaction();
-        	
-		$this->orm->save($itemOne);
-		$this->orm->save($itemTwo);
-        	
-		$this->assertEquals(2, count($this->orm->get('Item')));
-        	
-		$this->orm->commitTransaction();
-        	
-		$this->assertEquals(4, count($this->orm->get('Item')));
-	}
 	
 	public function testGetUnique()
 	{

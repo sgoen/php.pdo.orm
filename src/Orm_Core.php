@@ -16,11 +16,6 @@ class Orm_Core
 	protected $pdo;
 	
 	/**
-	 * @var boolean $inTransaction Holds the current transaction state.
-	 */
-	protected $inTransaction;
-	
-	/**
 	 * @var array() $transactionData Temporary holds all queries stored for a transaction.
 	 */
 	protected $transactionData;
@@ -167,48 +162,13 @@ class Orm_Core
 
 		$this->_processStatement($query, array('id' => $vars['id']));
 	}
-
-
+	
 	/**
-	 * Start a transaction in which multiple queries can be executed.
+	 * Loads a standard class for all the database tables.
 	 */
-	public function startTransaction()
+	public function loadTableClasses()
 	{
-		$this->inTransaction = true;
-	}
-
-	/**
-	 * Commit the started transaction, processes all the transactiondata.
-	 */
-	public function commitTransaction()
-	{
-		$this->_connect();
-		$this->pdo->beginTransaction();
-
-		foreach($this->transactionData as $data)
-		{
-			// quickfix
-			foreach($data as $key => $value)
-			{
-				$statement = $this->pdo->prepare($key);
-				$statement->execute($value);
-			}
-		}
-
-		$this->pdo->commit();
-		$this->_disconnect();
-
-		$this->inTransaction = false;
-		$this->transactionData = null;
-	}
-
-	/**
-	 * Cancel a transaction, removing all the temporary data.
-	 */
-	public function cancelTransaction()
-	{
-		$this->inTransaction = false;
-		$this->transactionData = null;	
+		// TODO
 	}
 	
 	/**
@@ -234,19 +194,12 @@ class Orm_Core
 	 */
 	protected function _processStatement($query, $vars)
 	{
-		if($this->inTransaction)
-		{
-			$this->transactionData[] = array($query => $vars);
-		}
-		else
-		{
-			$this->_connect();
+		$this->_connect();
 
-			$statement = $this->pdo->prepare($query);
-			$statement->execute($vars);
-			
-			$this->_disconnect();
-		}
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($vars);
+		
+		$this->_disconnect();
 	}
 
 	/**
